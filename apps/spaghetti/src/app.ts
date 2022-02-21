@@ -11,7 +11,7 @@ import passport from 'passport';
 import { NODE_ENV, MONGO_URI, SESSION_SECRET } from './utils/constants';
 import { initDb } from './utils/db';
 import logger from './utils/logger';
-import { testRouter, authRouter } from './routes';
+import { testRouter, authRouter, userRouter } from './routes';
 
 const config = require(`./config/config.${NODE_ENV}`);
 
@@ -79,6 +79,7 @@ const app = express();
 
   // API Routes
   app.use('/api/test', testRouter);
+  app.use('/api/user', userRouter);
 
   app.use(
     (
