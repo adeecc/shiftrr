@@ -3,7 +3,7 @@ import { Schema } from "mongoose";
 import { IService } from "@shiftrr/types/models";
 
 const ServiceSchema: Schema = new Schema({
-    seller: { type: Schema.Types.ObjectId, ref: "Users" },
+    seller: { type: Schema.Types.ObjectId, ref: "User" },
     name: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true },
     startingPrice: { type: Number, required: true },
@@ -12,4 +12,4 @@ const ServiceSchema: Schema = new Schema({
     timestamps: true
 })
 
-export default mongoose.model<IService>("Services", ServiceSchema);
+export default mongoose.model<IService>("Service", ServiceSchema);

@@ -6,6 +6,7 @@ export default interface IUser extends Document {
     profilePicture: string,
     name: string,
     username: string,
+    googleId: string,
     email: string,
     contactNumber: number,
     bio: string,
