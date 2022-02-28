@@ -56,7 +56,7 @@ const UserSchema: Schema = new Schema(
     role: {
       type: String,
       enum: Object.values(userRole),
-      default: userRole.active,
+      default: userRole.user,
       required: true,
     },
     sellerProfile: { type: SellerSchema, required: true },
