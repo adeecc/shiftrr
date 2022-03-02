@@ -4,7 +4,7 @@ import Service from '../models/service';
 
 const router = express.Router();
 
-router.get('/services', async (req: express.Request, res: express.Response) => {
+router.get('/', async (_req: express.Request, res: express.Response) => {
   try {
     return res.json(await Service.find());
   } catch (e: any) {
@@ -28,28 +28,30 @@ router.get(
   }
 );
 
-router.put(
-  '/services',
-  isLoggedIn,
-  async (req: express.Request, res: express.Response) => {
-    try {
-      await Service.findOneAndUpdate({ _id: req.body.serviceId }, req.body);
-      return res.json(await Service.findById(req.body.serviceId));
-    } catch (e: any) {
-      return res.status(400).json({
-        err: 'Service could not be updated',
-        msg: e,
-      });
-    }
-  }
-);
+router.post('/', (req: express.Request, res: express.Response) => {
+  const { seller, name, description, startingPrice, rating } = req.body.data;
+  const new_service = new Service({
+    seller,
+    name,
+    description,
+    startingPrice,
+    rating,
+  }).save();
+  res.json(new_service);
+});
 
 router.put(
   '/:serviceId',
   isLoggedIn,
   async (req: express.Request, res: express.Response) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const userId = req.user._id;
     try {
-      await Service.findOneAndUpdate({ _id: req.params.serviceId }, req.body);
+      await Service.findOneAndUpdate(
+        { _id: req.params.serviceId, 'seller._id': userId },
+        req.body
+      );
       return res.json(await Service.findById(req.user));
     } catch (e: any) {
       return res.status(400).json({
@@ -61,30 +63,15 @@ router.put(
 );
 
 router.delete(
-  '/services',
-  isLoggedIn,
-  async (req: express.Request, res: express.Response) => {
-    const id: any = req.body.serviceId;
-    try {
-      await Service.findOneAndDelete({ _id: id });
-      return res.json({
-        msg: 'Service deleted',
-      });
-    } catch (e: any) {
-      return res.status(400).json({
-        err: 'Service could not be deleted',
-      });
-    }
-  }
-);
-
-router.delete(
   '/:serviceId',
   isLoggedIn,
   async (req: express.Request, res: express.Response) => {
     const serviceId = req.params.serviceId;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const userId = req.user._id;
     try {
-      await Service.findOneAndDelete({ _id: serviceId });
+      await Service.findOneAndDelete({ _id: serviceId, 'seller._id': userId });
       return res.json({
         msg: 'Service deleted',
       });
