@@ -49,7 +49,7 @@ router.delete(
 
 router.get(
   '/',
-  isAdminLoggedIn,
+  isLoggedIn,
   async (_req: express.Request, res: express.Response) => {
     try {
       return res.json(await User.find());
@@ -63,7 +63,7 @@ router.get(
 
 router.get(
   '/:userId',
-  isAdminLoggedIn,
+  isLoggedIn,
   async (req: express.Request, res: express.Response) => {
     const userId = req.params.userId;
     try {
