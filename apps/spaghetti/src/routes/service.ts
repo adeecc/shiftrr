@@ -4,18 +4,6 @@ import Service from '../models/service';
 
 const router = express.Router();
 
-// router.post('/create-service', (req: express.Request, res: express.Response) => {
-//     const {seller, name, description, startingPrice, rating} = req.body.data;
-//     const new_service = new Service({
-//         seller,
-//         name,
-//         description,
-//         startingPrice,
-//         rating
-//     }).save();
-//     res.json(new_service);
-// })
-
 router.get('/services', async (req: express.Request, res: express.Response) => {
   try {
     return res.json(await Service.find());
@@ -45,8 +33,8 @@ router.put(
   isLoggedIn,
   async (req: express.Request, res: express.Response) => {
     try {
-      await Service.findOneAndUpdate({ _id: req.user }, req.body);
-      return res.json(await Service.findById(req.user));
+      await Service.findOneAndUpdate({ _id: req.body.serviceId }, req.body);
+      return res.json(await Service.findById(req.body.serviceId));
     } catch (e: any) {
       return res.status(400).json({
         err: 'Service could not be updated',
@@ -76,8 +64,7 @@ router.delete(
   '/services',
   isLoggedIn,
   async (req: express.Request, res: express.Response) => {
-    const loggedInUser: any = req.user;
-    const id = loggedInUser.id;
+    const id: any = req.body.serviceId;
     try {
       await Service.findOneAndDelete({ _id: id });
       return res.json({
