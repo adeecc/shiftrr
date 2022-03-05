@@ -11,13 +11,11 @@ const CreateServiceForm: React.FC<Props> = (props: Props) => {
     <Formik
       initialValues={{ name: '', description: '', startingPrice: 0 }}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
-        console.log(values);
         const res = await client.post('/api/service', {
           seller: user._id,
           ...values,
           rating: 5.0,
         });
-        console.log(res);
         setSubmitting(false);
         resetForm();
       }}
@@ -32,13 +30,12 @@ const CreateServiceForm: React.FC<Props> = (props: Props) => {
         if (values.startingPrice <= 0)
           errors.startingPrice = 'Starting Price must be greater than 0';
 
-        console.log(errors);
         return errors;
       }}
     >
       {({ isSubmitting, resetForm }) => (
         <Form>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-4 w-[18em] sm:w-[30em]">
             <div className="col-span-full flex flex-col gap-1">
               <label
                 htmlFor="name"
@@ -62,6 +59,7 @@ const CreateServiceForm: React.FC<Props> = (props: Props) => {
               <Field
                 name="description"
                 type="text"
+                as="textarea"
                 className="focus:ring-accent-300 focus:border-accent-300 w-full shadow-sm  border-gray-300 rounded-md"
               />
             </div>
