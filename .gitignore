@@ -11,8 +11,10 @@ yarn-error.log*
 # Yarn Berry
 # Yarn
 .yarn/*
+!.yarn/cache
 !.yarn/releases
 !.yarn/plugins
+!.yarn/sdks
 !.yarn/versions
 
 # misc
